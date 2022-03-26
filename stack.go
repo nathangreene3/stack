@@ -62,15 +62,15 @@ func (s *Stack) Equal(stack *Stack) bool {
 		return true
 	case s.size != stack.size:
 		return false
-	}
-
-	for i := 0; i < s.size; i++ {
-		if s.values[i] != stack.values[i] {
-			return false
+	default:
+		for i := 0; i < s.size; i++ {
+			if s.values[i] != stack.values[i] {
+				return false
+			}
 		}
-	}
 
-	return true
+		return true
+	}
 }
 
 // Peek returns the top of the stack without modifying the stack's
@@ -98,6 +98,10 @@ func (s *Stack) Pop() interface{} {
 func (s *Stack) Push(values ...interface{}) *Stack {
 	n := len(s.values) - s.size // Number of values that can be copied to the stack's values
 	if 0 < n {
+		if len(values) < n {
+			n = len(values)
+		}
+
 		copy(s.values[s.size:], values[:n])
 		s.size += n
 	}

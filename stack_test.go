@@ -119,3 +119,36 @@ func TestStack(t *testing.T) {
 		t.Errorf("\nexpected %v\nreceived %v\n", nil, rec)
 	}
 }
+
+func TestCopyEqual(t *testing.T) {
+	exp := New(0, 1, 2, 3, 4)
+	rec := exp.Copy()
+
+	// Test self equality
+	if !exp.Equal(exp) {
+		t.Errorf("\nexpected %v to equal itself\n", exp)
+	}
+
+	// Test same sizes, same values
+	if !exp.Equal(rec) {
+		t.Errorf("\nexpected %v to equal %v\n", exp, rec)
+	}
+
+	// Test different sizes
+	rec.Pop()
+	if exp.Equal(rec) {
+		t.Errorf("\nexpected %v to not equal %v\n", exp, rec)
+	}
+
+	// Test same size, different values
+	rec.Push(5)
+	if exp.Equal(rec) {
+		t.Errorf("\nexpected %v to not equal %v\n", exp, rec)
+	}
+
+	// Test shallow copy
+	rec = exp
+	if !exp.Equal(exp) {
+		t.Errorf("\nexpected %v to equal itself\n", exp)
+	}
+}
