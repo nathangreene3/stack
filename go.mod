@@ -1,3 +1,3 @@
 module github.com/nathangreene3/stack
 
-go 1.17
+go 1.20
