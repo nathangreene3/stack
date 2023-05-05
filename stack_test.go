@@ -72,7 +72,7 @@ func TestStack(t *testing.T) {
 	}
 
 	for _, value := range values {
-		if !stk.Contains(value) {
+		if !Contains(stk, value) {
 			t.Errorf("\nexpected %v to be contained\n", value)
 		}
 	}
@@ -84,13 +84,15 @@ func TestStack(t *testing.T) {
 	}
 
 	cpy := stk.Copy()
-	if !stk.Equal(cpy) {
+	if !Equal(stk, cpy) {
 		t.Errorf("\nexpected %v\nreceived %v\n", stk, cpy)
 	}
 
 	for expSize != 0 {
 		value := stk.Pop()
+
 		expSize--
+
 		if value != values[expSize] {
 			t.Errorf("\nexpected %v\nreceived %v\n", values[expSize], value)
 			return
@@ -101,12 +103,13 @@ func TestStack(t *testing.T) {
 			return
 		}
 
-		if stk.Contains(value) {
+		if Contains(stk, value) {
 			t.Errorf("\nexpected %v to not be contained\n", value)
 		}
 	}
 
 	stk.Clean()
+
 	if len(stk.values) != 0 || cap(stk.values) != 1 {
 		t.Errorf("\nexpected len %d, cap %d\nreceived %d, %d\n", 0, 1, len(stk.values), cap(stk.values))
 	}
@@ -125,30 +128,30 @@ func TestCopyEqual(t *testing.T) {
 	rec := exp.Copy()
 
 	// Test self equality
-	if !exp.Equal(exp) {
+	if !Equal(exp, exp) {
 		t.Errorf("\nexpected %v to equal itself\n", exp)
 	}
 
 	// Test same sizes, same values
-	if !exp.Equal(rec) {
+	if !Equal(exp, rec) {
 		t.Errorf("\nexpected %v to equal %v\n", exp, rec)
 	}
 
 	// Test different sizes
 	rec.Pop()
-	if exp.Equal(rec) {
+	if Equal(exp, rec) {
 		t.Errorf("\nexpected %v to not equal %v\n", exp, rec)
 	}
 
 	// Test same size, different values
 	rec.Push(5)
-	if exp.Equal(rec) {
+	if Equal(exp, rec) {
 		t.Errorf("\nexpected %v to not equal %v\n", exp, rec)
 	}
 
 	// Test shallow copy
 	rec = exp
-	if !exp.Equal(exp) {
+	if !Equal(exp, exp) {
 		t.Errorf("\nexpected %v to equal itself\n", exp)
 	}
 }
